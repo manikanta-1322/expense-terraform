@@ -1,13 +1,13 @@
 resource "aws_vpc" "main" {
   cidr_block = var.vpc_cidr_block
-  tags       = merge(var.tags, { name = var.env })
+  tags       = merge(var.tags, { Name = var.env })
 }
 
 resource "aws_subnet" "public" {
   count             = length(var.public_subnets)
   vpc_id            = aws_vpc.main.id
   cidr_block        = var.public_subnets[count.index]
-  tags              = merge(var.tags, { name = "public-subnets" })
+  tags              = merge(var.tags, { Name = "public-subnets" })
   availability_zone = var.azs[count.index]
 }
 
@@ -15,7 +15,7 @@ resource "aws_subnet" "web" {
   count              = length(var.web_subnets)
   vpc_id             = aws_vpc.main.id
   cidr_block         = var.web_subnets[count.index]
-  tags               = merge(var.tags, { name = "web-subnets" })
+  tags               = merge(var.tags, { Name = "web-subnets" })
   availability_zone  = var.azs[count.index]
 }
 
@@ -23,7 +23,7 @@ resource "aws_subnet" "app" {
   count              = length(var.app_subnets)
   vpc_id             = aws_vpc.main.id
   cidr_block         = var.app_subnets[count.index]
-  tags               = merge(var.tags, { name = "app-subnets" })
+  tags               = merge(var.tags, { Name = "app-subnets" })
   availability_zone  = var.azs[count.index]
 }
 
@@ -31,13 +31,13 @@ resource "aws_subnet" "db" {
   count              = length(var.db_subnets)
   vpc_id             = aws_vpc.main.id
   cidr_block         = var.db_subnets[count.index]
-  tags               = merge(var.tags, { name = "db-subnes" })
+  tags               = merge(var.tags, { Name = "db-subnes" })
   availability_zone  = var.azs[count.index]
 }
 
 resource "aws_route_table" "public" {
   vpc_id    = aws_vpc.main.id
-  tags      = merge(var.tags, { name = "public" })
+  tags      = merge(var.tags, { Name = "public" })
 
   route {
     cidr_block     = "0.0.0.0/0"
@@ -52,7 +52,7 @@ resource "aws_route_table" "public" {
 
 resource "aws_route_table" "web" {
   vpc_id     = aws_vpc.main.id
-  tags       = merge(var.tags, { name = "web" })
+  tags       = merge(var.tags, { Name = "web" })
 
   route {
     cidr_block     = "0.0.0.0/0"
@@ -67,7 +67,7 @@ resource "aws_route_table" "web" {
 
 resource "aws_route_table" "app" {
   vpc_id = aws_vpc.main.id
-  tags   = merge(var.tags, { name = "app" })
+  tags   = merge(var.tags, { Name = "app" })
 
   route {
     cidr_block     = "0.0.0.0/0"
@@ -82,7 +82,7 @@ resource "aws_route_table" "app" {
 
 resource "aws_route_table" "db" {
   vpc_id = aws_vpc.main.id
-  tags   = merge(var.tags, { name = "db" })
+  tags   = merge(var.tags, { Name = "db" })
 
   route {
     cidr_block     = "0.0.0.0/0"
@@ -121,7 +121,7 @@ resource "aws_route_table_association" "db" {
 
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.main.id
-  tags   = merge(var.tags, { name = "igw" })
+  tags   = merge(var.tags, { Name = "igw" })
 }
 
 resource "aws_eip" "ngw" {
@@ -138,7 +138,7 @@ resource "aws_vpc_peering_connection" "peer" {
   peer_vpc_id   = var.default_vpc_id
   vpc_id        = aws_vpc.main.id
   auto_accept   = true
-  tags          = merge(var.tags, { name = "peer-for=${var.env}-vpc-to-default-vpc" })
+  tags          = merge(var.tags, { Name = "peer-for=${var.env}-vpc-to-default-vpc" })
 }
 
 resource "aws_route" "default-vpc-peer-route" {
