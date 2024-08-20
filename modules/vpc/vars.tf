@@ -1,0 +1,12 @@
+variable "vpc_cidr_block" {}
+variable "tags" {}
+variable "env" {}
+variable "public_subnets" {}
+variable "azs" {}
+variable "web_subnets" {}
+variable "app_subnets" {}
+variable "db_subnets" {}
+variable "default_vpc_cidr" {}
+variable "default_vpc_id" {}
+variable "account_id" {}
+variable "default_route_table_id" {}
